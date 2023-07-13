@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: story-app
+  template:
+    metadata:
+      labels:
+        app: story-app
+    spec:
+      containers:
+        - name: story
+          image: explainlike5/story-kuber-demo:1
+          volumeMounts:
+            - mountPath: /app/story/
+              name: story-vol
+      volumes:
+        - name: story-vol
+          persistentVolumeClaim: 
+            claimName: host-pvc
+          # hostPath:
+          #   path: /data #on the host machine
+          #   type: DirectoryOrCreate
